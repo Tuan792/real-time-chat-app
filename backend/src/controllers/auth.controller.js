@@ -1,6 +1,8 @@
+import { sendWelcomeEmail } from "../emails/emailHandlers.js";
 import { generateToken } from "../lib/utils.js";
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
+import {ENV} from "../lib/env.js";
 
 export const signup = async (req, res) => {
     const {fullName, email, password} = req.body
@@ -43,15 +45,19 @@ export const signup = async (req, res) => {
             const saveUser = await newUser.save();
             generateToken(saveUser._id, res);
 
-
-                res.status(201).json({
+            
+            res.status(201).json({
                     _id:newUser._id,
                     fullName:newUser.fullName,
                     email:newUser.email,
                     profilePic:newUser.profilePic,
                 });
 
-                //msg welcome
+                try {
+                    await sendWelcomeEmail(saveUser.email, saveUser.fullName, ENV.CLIENT_URL);
+                } catch (error) {
+                    console.error("Gui tin nhan that bai:", error);
+                }
             } else {
                 res.status(400).json({message: "Du lieu nguoi dung khong hop le"})
             }
