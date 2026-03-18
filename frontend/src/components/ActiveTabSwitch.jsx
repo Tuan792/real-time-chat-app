@@ -11,7 +11,7 @@ function ActiveTabSwitch() {
           activeTab === "Tin nhắn" ? "bg-cyan-500/20 text-cyan-400" : "text-slate-400"
         }`}
       >
-        Chats
+        Tin nhắn
       </button>
 
       <button
@@ -20,7 +20,7 @@ function ActiveTabSwitch() {
           activeTab === "Liên hệ" ? "bg-cyan-500/20 text-cyan-400" : "text-slate-400"
         }`}
       >
-        Contacts
+        Liên hệ
       </button>
     </div>
   );

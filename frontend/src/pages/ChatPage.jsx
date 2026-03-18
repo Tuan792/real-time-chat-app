@@ -12,7 +12,7 @@ function ChatPage() {
   const { activeTab, selectedUser } = useChatStore();
 
   return (
-    <div className="relative w-full max-w-6xl h-[800px] bg-gradient-to-b from-purple-900 to-blue-900 p-4 rounded-xl">
+    <div className="relative w-full h-[800px] max-w-[1200px] mx-auto bg-gradient-to-b from-purple-900 to-blue-900 p-4 rounded-xl">
       <BorderAnimatedContainer>
         <div className="flex h-full rounded-xl overflow-hidden">
           {/* LEFT SIDE */}
@@ -26,7 +26,7 @@ function ChatPage() {
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="flex-1 flex flex-col bg-gradient-to-br from-indigo-600/60 to-purple-600/60 backdrop-blur-sm shadow-inner">
+          <div className="flex-1 min-w-0 flex flex-col bg-gradient-to-br from-indigo-600/60 to-purple-600/60 backdrop-blur-sm shadow-inner">
             {selectedUser ? <ChatContainer /> : <NoConversationPlaceholder />}
           </div>
         </div>
