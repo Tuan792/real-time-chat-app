@@ -10,21 +10,21 @@ export const signup = async (req, res) => {
 
   try {
     if (!fullName || !email || !password) {
-      return res.status(400).json({ message: "All fields are required" });
+      return res.status(400).json({ message: "Tất cả các trường đều bắt buộc" });
     }
 
     if (password.length < 6) {
-      return res.status(400).json({ message: "Password must be at least 6 characters" });
+      return res.status(400).json({ message: "Mật khẩu phải có ít nhất 6 ký tự." });
     }
 
     // check if emailis valid: regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      return res.status(400).json({ message: "Invalid email format" });
+      return res.status(400).json({ message: "Định dạng email không hợp lệ" });
     }
 
     const user = await User.findOne({ email });
-    if (user) return res.status(400).json({ message: "Email already exists" });
+    if (user) return res.status(400).json({ message: "Email đã tồn tại" });
 
     // 123456 => $dnjasdkasj_?dmsakmk
     const salt = await bcrypt.genSalt(10);
@@ -56,14 +56,14 @@ export const signup = async (req, res) => {
       try {
         await sendWelcomeEmail(savedUser.email, savedUser.fullName, ENV.CLIENT_URL);
       } catch (error) {
-        console.error("Failed to send welcome email:", error);
+        console.error("Không thể gửi email chào mừng:", error);
       }
     } else {
-      res.status(400).json({ message: "Invalid user data" });
+      res.status(400).json({ message: "Dữ liệu người dùng không hợp lệ" });
     }
   } catch (error) {
-    console.log("Error in signup controller:", error);
-    res.status(500).json({ message: "Internal server error" });
+    console.log("Lỗi trong signup controller:", error);
+    res.status(500).json({ message: "Lỗi máy chủ nội bộ" });
   }
 };
 
@@ -91,7 +91,7 @@ export const login = async (req, res) => {
       profilePic: user.profilePic,
     });
   } catch (error) {
-    console.error("Error in login controller:", error);
+    console.error("Lỗi trong login controller:", error);
     res.status(500).json({ message: "Lỗi máy chủ nội bộ" });
   }
 };
@@ -118,7 +118,7 @@ export const updateProfile = async (req, res) => {
 
     res.status(200).json(updatedUser);
   } catch (error) {
-    console.log("Error in update profile:", error);
+    console.log("Lỗi trong update profile:", error);
     res.status(500).json({ message: "Lỗi máy chủ nội bộ" });
   }
 };
