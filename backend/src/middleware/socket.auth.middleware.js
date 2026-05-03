@@ -11,15 +11,15 @@ export const socketAuthMiddleware = async (socket, next) => {
       ?.split("=")[1];
 
     if (!token) {
-      console.log("Kết nối socket bị từ chối: Không cung cấp mã thông báo.");
-      return next(new Error("Không được phép - Không có mã thông báo nào được cung cấp"));
+      console.log("Socket connection rejected: No token provided");
+      return next(new Error("Unauthorized - No Token Provided"));
     }
 
     // verify the token
     const decoded = jwt.verify(token, ENV.JWT_SECRET);
     if (!decoded) {
-      console.log("Kết nối socket bị từ chối: Mã thông báo không hợp lệ");
-      return next(new Error("Không được phép - Mã thông báo không hợp lệ"));
+      console.log("Socket connection rejected: Invalid token");
+      return next(new Error("Unauthorized - Invalid Token"));
     }
 
     // find the user fromdb
@@ -38,6 +38,6 @@ export const socketAuthMiddleware = async (socket, next) => {
     next();
   } catch (error) {
     console.log("Error in socket authentication:", error.message);
-    next(new Error("Không được phép - Xác thực thất bại"));
+    next(new Error("Unauthorized - Authentication failed"));
   }
 };
