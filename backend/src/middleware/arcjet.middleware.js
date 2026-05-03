@@ -7,12 +7,12 @@ export const arcjetProtection = async (req, res, next) => {
 
     if (decision.isDenied()) {
       if (decision.reason.isRateLimit()) {
-        return res.status(429).json({ message: "Rate limit exceeded. Please try again later." });
+        return res.status(429).json({ message: "Đã vượt quá giới hạn số lượt truy cập. Vui lòng thử lại sau." });
       } else if (decision.reason.isBot()) {
-        return res.status(403).json({ message: "Bot access denied." });
+        return res.status(403).json({ message: "Quyền truy cập của bot bị từ chối." });
       } else {
         return res.status(403).json({
-          message: "Access denied by security policy.",
+          message: "Quyền truy cập bị từ chối do chính sách bảo mật.",
         });
       }
     }
@@ -20,8 +20,8 @@ export const arcjetProtection = async (req, res, next) => {
     // check for spoofed bots
     if (decision.results.some(isSpoofedBot)) {
       return res.status(403).json({
-        error: "Spoofed bot detected",
-        message: "Malicious bot activity detected.",
+        error: "Phát hiện bot giả mạo",
+        message: "Phát hiện hoạt động của bot độc hại.",
       });
     }
 
