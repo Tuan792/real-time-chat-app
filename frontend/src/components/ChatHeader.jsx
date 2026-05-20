@@ -15,7 +15,6 @@ function ChatHeader() {
 
     window.addEventListener("keydown", handleEscKey);
 
-    // cleanup function
     return () => window.removeEventListener("keydown", handleEscKey);
   }, [setSelectedUser]);
 

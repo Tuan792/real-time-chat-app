@@ -20,6 +20,3 @@ res.cookie("jwt", token, {
 
   return token;
 };
-
-// http://localhost
-// https://dsmakmk.com

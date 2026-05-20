@@ -4,7 +4,6 @@ import { ENV } from "../lib/env.js";
 
 export const socketAuthMiddleware = async (socket, next) => {
   try {
-    // extract token from http-only cookies
     const token = socket.handshake.headers.cookie
       ?.split("; ")
       .find((row) => row.startsWith("jwt="))
@@ -12,32 +11,29 @@ export const socketAuthMiddleware = async (socket, next) => {
 
     if (!token) {
       console.log("Socket connection rejected: No token provided");
-      return next(new Error("Unauthorized - No Token Provided"));
+      return next(new Error("Không được phép - Không có mã thông báo nào được cung cấp"));
     }
 
-    // verify the token
     const decoded = jwt.verify(token, ENV.JWT_SECRET);
     if (!decoded) {
-      console.log("Socket connection rejected: Invalid token");
-      return next(new Error("Unauthorized - Invalid Token"));
+      console.log("Kết nối socket bị từ chối: Mã thông báo không hợp lệ");
+      return next(new Error("Không được phép - Mã thông báo không hợp lệ"));
     }
 
-    // find the user fromdb
     const user = await User.findById(decoded.userId).select("-password");
     if (!user) {
-      console.log("Socket connection rejected: User not found");
-      return next(new Error("User not found"));
+      console.log("Kết nối socket bị từ chối: Không tìm thấy người dùng.");
+      return next(new Error("Không tìm thấy người dùng"));
     }
 
-    // attach user info to socket
     socket.user = user;
     socket.userId = user._id.toString();
 
-    console.log(`Socket authenticated for user: ${user.fullName} (${user._id})`);
+    console.log(`Kết nối đã được xác thực cho người dùng: ${user.fullName} (${user._id})`);
 
     next();
   } catch (error) {
-    console.log("Error in socket authentication:", error.message);
-    next(new Error("Unauthorized - Authentication failed"));
+    console.log("Lỗi xác thực socket:", error.message);
+    next(new Error("Không được phép - Xác thực thất bại"));
   }
 };

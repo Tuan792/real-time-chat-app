@@ -11,7 +11,7 @@ export const getAllContacts = async (req, res) => {
     res.status(200).json(filteredUsers);
   } catch (error) {
     console.log("Error in getAllContacts:", error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Lỗi máy chủ" });
   }
 };
 
@@ -29,7 +29,7 @@ export const getMessagesByUserId = async (req, res) => {
 
     res.status(200).json(messages);
   } catch (error) {
-    console.log("Error in getMessages controller: ", error.message);
+    console.log("Lỗi trong getMessages controller: ", error.message);
     res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
   }
 };
@@ -53,7 +53,6 @@ export const sendMessage = async (req, res) => {
 
     let imageUrl;
     if (image) {
-      // upload base64 image to cloudinary
       const uploadResponse = await cloudinary.uploader.upload(image);
       imageUrl = uploadResponse.secure_url;
     }
@@ -74,7 +73,7 @@ export const sendMessage = async (req, res) => {
 
     res.status(201).json(newMessage);
   } catch (error) {
-    console.log("Error in sendMessage controller: ", error.message);
+    console.log("Lỗi trong sendMessage controller: ", error.message);
     res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
   }
 };
@@ -83,7 +82,6 @@ export const getChatPartners = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
 
-    // find all the messages where the logged-in user is either sender or receiver
     const messages = await Message.find({
       $or: [{ senderId: loggedInUserId }, { receiverId: loggedInUserId }],
     });
@@ -102,7 +100,7 @@ export const getChatPartners = async (req, res) => {
 
     res.status(200).json(chatPartners);
   } catch (error) {
-    console.error("Error in getChatPartners: ", error.message);
+    console.error("Lỗi trong getChatPartners: ", error.message);
     res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
   }
 };
