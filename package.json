@@ -12,5 +12,14 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tuan792/real-time-chat-app.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Tuan792/real-time-chat-app/issues"
+  },
+  "homepage": "https://github.com/Tuan792/real-time-chat-app#readme"
 }
