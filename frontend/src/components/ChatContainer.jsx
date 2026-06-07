@@ -39,11 +39,9 @@ function ChatContainer() {
   ]);
 
   useEffect(() => {
-    if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({
-        behavior: "smooth",
-      });
-    }
+    messageEndRef.current?.scrollIntoView({
+      behavior: "smooth",
+    });
   }, [messages]);
 
   return (
@@ -62,9 +60,9 @@ function ChatContainer() {
                     : "chat-start"
                 }`}
               >
-                <div className="relative group">
+                <div className="relative group inline-block">
                   <div
-                    className={`chat-bubble max-w-[85%] md:max-w-[65%] rounded-2xl shadow-lg ${
+                    className={`chat-bubble rounded-2xl shadow-lg break-words ${
                       msg.senderId === authUser._id
                         ? "bg-cyan-500 text-white"
                         : "bg-slate-800 text-slate-200"
@@ -74,12 +72,12 @@ function ChatContainer() {
                       <img
                         src={msg.image}
                         alt="Shared"
-                        className="rounded-lg max-w-full h-auto"
+                        className="rounded-lg max-w-full h-auto mb-2"
                       />
                     )}
 
                     {msg.text && (
-                      <p className="mt-2 break-words">
+                      <p className="whitespace-pre-wrap">
                         {msg.text}
                       </p>
                     )}
@@ -95,11 +93,11 @@ function ChatContainer() {
                   {msg.senderId === authUser._id && (
                     <button
                       onClick={() => {
-                        const confirmDelete = window.confirm(
-                          "Bạn có chắc muốn xóa tin nhắn này?"
-                        );
-
-                        if (confirmDelete) {
+                        if (
+                          window.confirm(
+                            "Bạn có chắc muốn xóa tin nhắn này?"
+                          )
+                        ) {
                           deleteMessage(msg._id);
                         }
                       }}
@@ -107,20 +105,23 @@ function ChatContainer() {
                         absolute
                         top-1/2
                         -translate-y-1/2
-                        -left-10
-                        opacity-0
-                        group-hover:opacity-100
-                        transition-all
-                        duration-200
-                        p-2
+                        right-full
+                        mr-2
+                        hidden
+                        group-hover:flex
+                        items-center
+                        justify-center
+                        w-8
+                        h-8
                         rounded-full
                         bg-red-500
                         hover:bg-red-600
                         text-white
                         shadow-lg
+                        z-50
                       "
                     >
-                      <Trash2Icon size={16} />
+                      <Trash2Icon size={14} />
                     </button>
                   )}
                 </div>
