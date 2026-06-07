@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import BorderAnimatedContainer from "../components/BorderAnimatedContainer";
-import { MessageCircleIcon, MailIcon, LoaderIcon, LockIcon } from "lucide-react";
+import { MessageCircleIcon, MailIcon, LoaderIcon, LockIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import { Link } from "react-router";
 
 function LoginPage() {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const { login, isLoggingIn } = useAuthStore();
 
   const handleSubmit = (e) => {
@@ -48,19 +49,38 @@ function LoginPage() {
                   </div>
 
                   {/* PASSWORD INPUT */}
-                  <div>
-                    <label className="auth-input-label text-gray-200">Mật khẩu</label>
-                    <div className="relative">
-                      <LockIcon className="auth-input-icon text-indigo-200" />
-                      <input
-                        type="password"
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        className="input bg-gray-700/50 text-white placeholder-gray-300"
-                        placeholder="Nhập mật khẩu"
-                      />
-                    </div>
-                  </div>
+<div>
+  <label className="auth-input-label text-gray-200">Mật khẩu</label>
+
+  <div className="relative">
+    <LockIcon className="auth-input-icon text-indigo-200" />
+
+    <input
+      type={showPassword ? "text" : "password"}
+      value={formData.password}
+      onChange={(e) =>
+        setFormData({
+          ...formData,
+          password: e.target.value,
+        })
+      }
+      className="input bg-gray-700/50 text-white placeholder-gray-300 pr-12"
+      placeholder="Nhập mật khẩu"
+    />
+
+    <button
+      type="button"
+      onClick={() => setShowPassword(!showPassword)}
+      className="absolute right-3 top-1/2 -translate-y-1/2 text-indigo-200 hover:text-white"
+    >
+      {showPassword ? (
+        <EyeOffIcon size={20} />
+      ) : (
+        <EyeIcon size={20} />
+      )}
+    </button>
+  </div>
+</div>
 
                   {/* SUBMIT BUTTON */}
                   <button
