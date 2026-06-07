@@ -21,7 +21,7 @@ function App() {
 
 
   return (
-    <div className="min-h-screen bg-slate-900 relative flex items-center justify-center p-4 overflow-hidden"> 
+    <div className="min-h-screen bg-slate-900 relative flex items-center justify-center p-4"> 
 
     {/* DECORATORS - GLOW SHAPES ONLY */}
     <div className="absolute top-0 -left-4 size-96 bg-fuchsia-200 opacity-25 blur-[120px]" />
