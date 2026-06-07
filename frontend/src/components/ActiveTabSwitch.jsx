@@ -6,7 +6,7 @@ function ActiveTabSwitch() {
   return (
     <div className="tabs tabs-boxed bg-transparent p-2 m-2">
       <button
-        onClick={() => setActiveTab("chats")}
+        onClick={() => setActiveTab("Tin nhắn")}
         className={`tab ${
           activeTab === "Tin nhắn" ? "bg-cyan-500/20 text-cyan-400" : "text-slate-400"
         }`}
@@ -15,7 +15,7 @@ function ActiveTabSwitch() {
       </button>
 
       <button
-        onClick={() => setActiveTab("contacts")}
+        onClick={() => setActiveTab("Liên hệ")}
         className={`tab ${
           activeTab === "Liên hệ" ? "bg-cyan-500/20 text-cyan-400" : "text-slate-400"
         }`}

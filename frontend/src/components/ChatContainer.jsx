@@ -43,14 +43,18 @@ function ChatContainer() {
                 className={`chat ${msg.senderId === authUser._id ? "chat-end" : "chat-start"}`}
               >
                 <div
-                  className={`chat-bubble max-w-[65%] rounded-2xl shadow-lg ${
+                  className={`chat-bubble max-w-[85%] md:max-w-[65%] rounded-2xl shadow-lg ${
                     msg.senderId === authUser._id
                       ? "bg-cyan-500 text-white"
                       : "bg-slate-800 text-slate-200"
                   }`}
                 >
                   {msg.image && (
-                    <img src={msg.image} alt="Shared" className="rounded-lg h-48 object-cover" />
+                    <img
+  src={msg.image}
+  alt="Shared"
+  className="rounded-lg max-w-full h-auto"
+/>
                   )}
                   {msg.text && <p className="mt-2">{msg.text}</p>}
                   <p className="text-xs mt-1 opacity-75 flex items-center gap-1">

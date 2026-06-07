@@ -34,7 +34,19 @@ function ChatPage() {
           </div>
 
           {/* RIGHT SIDE */}
-          <div className="flex-1 min-w-0 flex flex-col bg-gradient-to-br from-indigo-600/60 to-purple-600/60 backdrop-blur-sm shadow-inner">
+          <div
+  className={`
+    ${selectedUser ? "flex" : "hidden md:flex"}
+    flex-1
+    min-w-0
+    flex-col
+    bg-gradient-to-br
+    from-indigo-600/60
+    to-purple-600/60
+    backdrop-blur-sm
+    shadow-inner
+  `}
+>
             {selectedUser ? <ChatContainer /> : <NoConversationPlaceholder />}
           </div>
         </div>
