@@ -104,9 +104,26 @@ export const useChatStore = create((set, get) => ({
       }
     });
   },
+  
+  deleteMessage: async (messageId) => {
+  try {
+    await axiosInstance.delete(`/messages/${messageId}`);
+
+    set({
+      messages: get().messages.filter(
+        (msg) => msg._id !== messageId
+      ),
+    });
+
+    toast.success("Đã xóa tin nhắn");
+  } catch (error) {
+    toast.error("Không thể xóa tin nhắn");
+  }
+},
 
   unsubscribeFromMessages: () => {
     const socket = useAuthStore.getState().socket;
     socket.off("newMessage");
   },
 }));
+

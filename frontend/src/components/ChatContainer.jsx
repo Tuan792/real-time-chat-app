@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
+import { Trash2Icon } from "lucide-react";
+
 import { useAuthStore } from "../store/useAuthStore";
 import { useChatStore } from "../store/useChatStore";
+
 import ChatHeader from "./ChatHeader";
 import NoChatHistoryPlaceholder from "./NoChatHistoryPlaceholder";
 import MessageInput from "./MessageInput";
@@ -14,64 +17,124 @@ function ChatContainer() {
     isMessagesLoading,
     subscribeToMessages,
     unsubscribeFromMessages,
+    deleteMessage,
   } = useChatStore();
+
   const { authUser } = useAuthStore();
+
   const messageEndRef = useRef(null);
 
   useEffect(() => {
+    if (!selectedUser) return;
+
     getMessagesByUserId(selectedUser._id);
     subscribeToMessages();
 
     return () => unsubscribeFromMessages();
-  }, [selectedUser, getMessagesByUserId, subscribeToMessages, unsubscribeFromMessages]);
+  }, [
+    selectedUser,
+    getMessagesByUserId,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
 
   useEffect(() => {
     if (messageEndRef.current) {
-      messageEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messageEndRef.current.scrollIntoView({
+        behavior: "smooth",
+      });
     }
   }, [messages]);
 
   return (
     <>
       <ChatHeader />
-      <div className="flex-1 px-6 overflow-y-auto py-8 w-full">
+
+      <div className="flex-1 px-6 py-8 overflow-y-auto w-full">
         {messages.length > 0 && !isMessagesLoading ? (
           <div className="space-y-6 w-full">
             {messages.map((msg) => (
               <div
                 key={msg._id}
-                className={`chat ${msg.senderId === authUser._id ? "chat-end" : "chat-start"}`}
+                className={`chat ${
+                  msg.senderId === authUser._id
+                    ? "chat-end"
+                    : "chat-start"
+                }`}
               >
-                <div
-                  className={`chat-bubble max-w-[85%] md:max-w-[65%] rounded-2xl shadow-lg ${
-                    msg.senderId === authUser._id
-                      ? "bg-cyan-500 text-white"
-                      : "bg-slate-800 text-slate-200"
-                  }`}
-                >
-                  {msg.image && (
-                    <img
-  src={msg.image}
-  alt="Shared"
-  className="rounded-lg max-w-full h-auto"
-/>
+                <div className="relative group">
+                  <div
+                    className={`chat-bubble max-w-[85%] md:max-w-[65%] rounded-2xl shadow-lg ${
+                      msg.senderId === authUser._id
+                        ? "bg-cyan-500 text-white"
+                        : "bg-slate-800 text-slate-200"
+                    }`}
+                  >
+                    {msg.image && (
+                      <img
+                        src={msg.image}
+                        alt="Shared"
+                        className="rounded-lg max-w-full h-auto"
+                      />
+                    )}
+
+                    {msg.text && (
+                      <p className="mt-2 break-words">
+                        {msg.text}
+                      </p>
+                    )}
+
+                    <p className="text-xs mt-2 opacity-75">
+                      {new Date(msg.createdAt).toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  </div>
+
+                  {msg.senderId === authUser._id && (
+                    <button
+                      onClick={() => {
+                        const confirmDelete = window.confirm(
+                          "Bạn có chắc muốn xóa tin nhắn này?"
+                        );
+
+                        if (confirmDelete) {
+                          deleteMessage(msg._id);
+                        }
+                      }}
+                      className="
+                        absolute
+                        top-1/2
+                        -translate-y-1/2
+                        -left-10
+                        opacity-0
+                        group-hover:opacity-100
+                        transition-all
+                        duration-200
+                        p-2
+                        rounded-full
+                        bg-red-500
+                        hover:bg-red-600
+                        text-white
+                        shadow-lg
+                      "
+                    >
+                      <Trash2Icon size={16} />
+                    </button>
                   )}
-                  {msg.text && <p className="mt-2">{msg.text}</p>}
-                  <p className="text-xs mt-1 opacity-75 flex items-center gap-1">
-                    {new Date(msg.createdAt).toLocaleTimeString(undefined, {
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
                 </div>
               </div>
             ))}
+
             <div ref={messageEndRef} />
           </div>
         ) : isMessagesLoading ? (
           <MessagesLoadingSkeleton />
         ) : (
-          <NoChatHistoryPlaceholder name={selectedUser.fullName} />
+          <NoChatHistoryPlaceholder
+            name={selectedUser?.fullName}
+          />
         )}
       </div>
 

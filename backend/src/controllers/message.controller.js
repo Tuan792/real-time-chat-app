@@ -104,3 +104,35 @@ export const getChatPartners = async (req, res) => {
     res.status(500).json({ error: "Lỗi máy chủ nội bộ" });
   }
 };
+
+export const deleteMessage = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const message = await Message.findById(id);
+
+    if (!message) {
+      return res.status(404).json({
+        message: "Không tìm thấy tin nhắn",
+      });
+    }
+
+    if (message.senderId.toString() !== req.user._id.toString()) {
+      return res.status(403).json({
+        message: "Bạn không có quyền xóa tin nhắn này",
+      });
+    }
+
+    await Message.findByIdAndDelete(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Đã xóa tin nhắn",
+    });
+  } catch (error) {
+    console.log("Delete message error:", error);
+    res.status(500).json({
+      message: "Lỗi máy chủ",
+    });
+  }
+};
