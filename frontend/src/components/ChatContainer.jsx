@@ -48,96 +48,81 @@ function ChatContainer() {
     <>
       <ChatHeader />
 
-      <div className="flex-1 px-6 py-8 overflow-y-auto w-full">
-        {messages.length > 0 && !isMessagesLoading ? (
-          <div className="space-y-6 w-full">
-            {messages.map((msg) => (
-              <div
-                key={msg._id}
-                className={`chat ${
-                  msg.senderId === authUser._id
-                    ? "chat-end"
-                    : "chat-start"
-                }`}
-              >
-                <div className="relative group inline-block">
-                  <div
-                    className={`chat-bubble rounded-2xl shadow-lg break-words ${
-                      msg.senderId === authUser._id
-                        ? "bg-cyan-500 text-white"
-                        : "bg-slate-800 text-slate-200"
-                    }`}
-                  >
-                    {msg.image && (
-                      <img
-                        src={msg.image}
-                        alt="Shared"
-                        className="rounded-lg max-w-full h-auto mb-2"
-                      />
-                    )}
+      <div className="space-y-4 w-full">
+  {messages.map((msg) => {
+    const isMine = msg.senderId === authUser._id;
 
-                    {msg.text && (
-                      <p className="whitespace-pre-wrap">
-                        {msg.text}
-                      </p>
-                    )}
+    return (
+      <div
+        key={msg._id}
+        className={`flex ${isMine ? "justify-end" : "justify-start"} group`}
+      >
+        <div className="relative max-w-[80%]">
+          {/* Nút xóa chỉ hiện khi hover */}
+          {isMine && (
+            <button
+              onClick={() => deleteMessage(msg._id)}
+              className="
+                absolute
+                -left-10
+                top-1/2
+                -translate-y-1/2
+                opacity-0
+                group-hover:opacity-100
+                transition
+                bg-red-500
+                hover:bg-red-600
+                p-2
+                rounded-full
+              "
+            >
+              <Trash2Icon size={16} className="text-white" />
+            </button>
+          )}
 
-                    <p className="text-xs mt-2 opacity-75">
-                      {new Date(msg.createdAt).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
-                  </div>
+          <div
+            className={`
+              px-4
+              py-3
+              rounded-2xl
+              shadow-lg
+              break-words
+              whitespace-pre-wrap
+              ${
+                isMine
+                  ? "bg-cyan-500 text-white"
+                  : "bg-slate-800 text-slate-200"
+              }
+            `}
+          >
+            {msg.image && (
+              <img
+                src={msg.image}
+                alt="Shared"
+                className="rounded-lg mb-2 max-w-full"
+              />
+            )}
 
-                  {msg.senderId === authUser._id && (
-                    <button
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            "Bạn có chắc muốn xóa tin nhắn này?"
-                          )
-                        ) {
-                          deleteMessage(msg._id);
-                        }
-                      }}
-                      className="
-                        absolute
-                        top-1/2
-                        -translate-y-1/2
-                        right-full
-                        mr-2
-                        hidden
-                        group-hover:flex
-                        items-center
-                        justify-center
-                        w-8
-                        h-8
-                        rounded-full
-                        bg-red-500
-                        hover:bg-red-600
-                        text-white
-                        shadow-lg
-                        z-50
-                      "
-                    >
-                      <Trash2Icon size={14} />
-                    </button>
-                  )}
-                </div>
-              </div>
-            ))}
+            {msg.text && (
+              <p className="text-base leading-relaxed">
+                {msg.text}
+              </p>
+            )}
 
-            <div ref={messageEndRef} />
+            <p className="text-xs opacity-70 mt-2">
+              {new Date(msg.createdAt).toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </p>
           </div>
-        ) : isMessagesLoading ? (
-          <MessagesLoadingSkeleton />
-        ) : (
-          <NoChatHistoryPlaceholder
-            name={selectedUser?.fullName}
-          />
-        )}
+        </div>
       </div>
+    );
+  })}
+
+  <div ref={messageEndRef} />
+</div>
 
       <MessageInput />
     </>
