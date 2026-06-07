@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useAuthStore } from "../store/useAuthStore";
 import BorderAnimatedContainer from "../components/BorderAnimatedContainer";
-import { MessageCircleIcon, MailIcon, LoaderIcon, LockIcon, EyeIcon, EyeOffIcon } from "lucide-react";
-import { Link } from "react-router";
+import { MessageCircleIcon, MailIcon, LoaderIcon, LockIcon, UserIcon, EyeIcon, EyeOffIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function SignUpPage() {
   const [formData, setFormData] = useState({ fullName: "", email: "", password: "" });
@@ -63,7 +63,6 @@ function SignUpPage() {
                     </div>
                   </div>
 
-                  {/* PASSWORD INPUT */}
                   {/* PASSWORD INPUT */}
 <div>
   <label className="auth-input-label text-gray-200">Mật khẩu</label>
