@@ -2,6 +2,7 @@ import { XIcon } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
 import { useEffect } from "react";
 import { useAuthStore } from "../store/useAuthStore";
+import { ArrowLeftIcon, XIcon } from "lucide-react";
 
 function ChatHeader() {
   const { selectedUser, setSelectedUser } = useChatStore();
@@ -42,6 +43,10 @@ function ChatHeader() {
 >
         <XIcon className="w-5 h-5 text-slate-400 hover:text-slate-200 transition-colors cursor-pointer" />
       </button>
+      <button onClick={() => setSelectedUser(null)}>
+  <ArrowLeftIcon className="w-5 h-5 text-slate-400 md:hidden" />
+  <XIcon className="w-5 h-5 text-slate-400 hidden md:block" />
+</button>
     </div>
   );
 }
